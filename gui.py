@@ -1,29 +1,32 @@
 import tkinter as tk
+from tkinter import ttk
+from ttkthemes import ThemedTk
 from main import SantaTime
 import random
 
-root = tk.Tk()
+root = ThemedTk(theme='yaru')
 root.geometry("1000x700")
 root.title("Secret Santa App")
-w=tk.Label(root, text="Hey Buddy! Please select the participating committees.", font=("Papyrus", 25))
+w=ttk.Label(root, text="Hey Buddy! Please select the " \
+"participating committees.", font=("Arial", 25))
 w.pack(pady=10)
 
 committee_list = ["Academicie", "Almanac", "Alumni", "BAf",
                   "CaCo", "De Wabber", "Ecolution", "EI",
-                  "Foreign Affairs", "FCP", "FYC",
+                  "FA", "FCP", "FYC",
                   "Idiomotor", "InNatura", "LifeLine",
                   "Lustrum",  "Paparazcie", "SLAK",
                   "StudyTour"]
 vars_dict = {}
 buttons_dict = {}
 
-main_frame = tk.Frame(root)
+main_frame = ttk.Frame(root)
 main_frame.pack(fill='both', expand=True, padx=10, pady=10)
 
-left_frame = tk.Frame(main_frame)
+left_frame = ttk.Frame(main_frame)
 left_frame.pack(side='left', fill='y', padx=10, pady=10)
 
-right_frame = tk.Frame(main_frame)
+right_frame = ttk.Frame(main_frame)
 right_frame.pack(side='right', fill='both', expand=True, padx=10, pady=10)
 
 
@@ -31,21 +34,21 @@ for committee in committee_list:
     key = committee.lower().replace(" ", "_")
     vars_dict[key] = tk.IntVar()
 
-    buttons_dict[key] = tk.Checkbutton(
+    buttons_dict[key] = ttk.Checkbutton(
         left_frame,
         text=committee,
         variable=vars_dict[key],
         onvalue=1,
         offvalue=0,
-        height=2,
         width=15,
-        pady=2
     )
+    buttons_dict[key].invoke()
 
     buttons_dict[key].pack(anchor='w', padx=20)
-    buttons_dict[key].select()
 
-results_box = tk.Text(right_frame, height=25, width=50, font=("Courier", 20))
+
+results_box = tk.Text(right_frame, height=25, width=50, font=("PT Mono", 20))
+results_box.tag_configure("center", justify='center')
 
 def shuffle():
     selected = []
@@ -57,13 +60,16 @@ def shuffle():
     santa.shuffle_until_valid()
     result_string = santa.return_string_results() 
     results_box.delete("1.0", tk.END)
-    results_box.insert(tk.END, result_string)
+    results_box.insert(tk.END, result_string, "center")
 
 
-main_button = tk.Button(right_frame, text = 'Reveal Setup!', command = shuffle, height=2, width=20)
-main_button.pack(side='top', pady=20)
+main_button = ttk.Button(right_frame,
+                        text ='Reveal Setup!',
+                        command=shuffle, 
+                        width=20,
+
+                    )
+main_button.pack(side='top', pady=20, anchor="center")
 results_box.pack(side='top', pady=20, fill='both', expand=True)
-
-
 
 root.mainloop()

@@ -81,23 +81,11 @@ class SantaTime:
         if not self.shuffled_committees:
             return "No Pairings Available."
         
-        lines = ["=== Secret Santa Pairings ==="]
+        lines = ["==== Secret Santa Pairings ===="]
         # for dynamic field width alignment in f-string
         max_len = max(len(k) for k in self.committees)
         for giver, receiver in self.shuffled_committees.items():
             #  add spaces to the right of giver until character num = max_len
-            lines.append(f"{giver:<{max_len}}  →  {receiver}") 
+            lines.append(f"{giver:<{max_len}}  →  {receiver:>{max_len}}")
         lines.append("=============================")
         return "\n".join(lines)
-
-
-def main() -> None:
-    items = input("Enter the names of the participating committees, " \
-    "separated by commas: ").split(",")
-    items = [i.strip() for i in items]
-    santa = SantaTime(items)
-    santa.shuffle_until_valid()
-    santa.return_string_results()
-
-if __name__ == "__main__":
-    main()
