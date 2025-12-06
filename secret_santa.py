@@ -36,15 +36,11 @@ class SantaTime:
             A dictionary mapping each committee to the committee they will gift to.
         """
 
-        if self.three_items == None:
-            raise ValueError("Committee list not validated.")
-
         shuffled = self.committees[:]  # make committee list copy
         for try_number in range(max_tries):  # think like a machine
             valid_found = False
 
-            if self.three_items == True: 
-                
+            if self.three_items: 
                 self.shuffled_committees = {
                     self.committees[0]: self.committees[1],
                     self.committees[1]: self.committees[2],
@@ -72,13 +68,13 @@ class SantaTime:
             if not mutual_found and not self_assigned_found:
                 valid_found = True
                 self.shuffled_committees = dict(pair_attempt)
-                break
+                return 
 
-        if valid_found == False:
+        if not valid_found:
             print("Warning: Maximum shuffle attempts reached without finding a valid " \
             "pairing. An incorrect pairing has been assigned.")
             self.shuffled_committees = dict(pair_attempt)
-
+            
 
     def print_results(self) -> None:
         "Print Secret Santa pairings in aligned format."
