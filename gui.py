@@ -30,8 +30,19 @@ for committee in committee_list:
     )
 
     buttons_dict[key].pack(anchor='w', padx=20)
-
     buttons_dict[key].select()
+
+
+def get_selected_committees():
+    selected = []
+    for committee in committee_list:
+        key = committee.lower().replace(" ", "_")
+        if vars_dict[key].get() == 1:
+            selected.append(committee)
+    return selected
+
+main_button = tk.Button(root,text = 'Reveal Setup!', command = get_selected_committees)
+main_button.pack(pady=20)
 
 root.mainloop()
 
