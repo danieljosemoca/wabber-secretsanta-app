@@ -2,7 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 from ttkthemes import ThemedTk
 from main import SantaTime
+import customtkinter as ctk
 
+ctk.set_appearance_mode("light")
 
 # themes and main labels and such
 root = ThemedTk(theme="yaru")
@@ -77,8 +79,13 @@ for committee in committee_list:
 other_label = ttk.Label(left_frame, text="Add Other: ")
 other_label.pack(anchor="w", padx=20, pady=(15, 0))
 
-other_entry = ttk.Entry(
-    left_frame, width=18, exportselection=False, font=("Arial"), foreground="#772953"
+other_entry = ctk.CTkEntry(
+    left_frame,
+    corner_radius=9,
+    width=156,
+    exportselection=False,
+    font=("Arial", 12),
+    border_color="#A55B82",
 )
 other_entry.pack(anchor="w", padx=20)
 
@@ -128,11 +135,11 @@ results_box = tk.Text(
     width=50,
     font=("PT Mono", 20),
     relief="groove",
-    selectbackground="#7E5C6E",
-    inactiveselectbackground="#71666C",
-    highlightthickness=1.5,
+    selectbackground="#6E3954",
+    inactiveselectbackground="#4E9195",
+    highlightthickness=0.5,
 )
-results_box.config(highlightbackground="#928d91", highlightcolor="#928d91")
+results_box.config(highlightbackground="#772953", highlightcolor="#772953")
 results_box.tag_configure("center", justify="center")
 
 
@@ -155,10 +162,7 @@ def shuffle():
 
 
 main_button = ttk.Button(
-    right_frame,
-    text="Reveal Setup!",
-    command=shuffle,
-    width=20,
+    right_frame, text="Reveal Setup!", command=shuffle, width=20, cursor="pencil"
 )
 main_button.pack(side="top", pady=20, anchor="center")
 results_box.pack(side="top", pady=20, fill="both", expand=True)
