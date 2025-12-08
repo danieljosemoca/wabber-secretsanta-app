@@ -19,11 +19,28 @@ main_frame.pack(fill='both', expand=True, padx=10, pady=10)
 left_frame = ttk.Frame(main_frame)
 left_frame.pack(side='left', fill='y', padx=10, pady=10)
 
+checks_frame = ttk.Frame(left_frame)
+checks_frame.pack(anchor='nw', fill='y')
+
 right_frame = ttk.Frame(main_frame)
 right_frame.pack(side='right', fill='both', expand=True, padx=10, pady=10)
 
-
 # checkbuttons
+def _make_checkbutton(committee):
+    key = committee.lower().replace(" ", "_") # python style rules
+    vars_dict[key] = tk.IntVar()
+
+    buttons_dict[key] = ttk.Checkbutton(
+        checks_frame,
+        text=committee,
+        variable=vars_dict[key],
+        onvalue=1,
+        offvalue=0,
+        width=15,
+    )
+    buttons_dict[key].invoke()
+
+    buttons_dict[key].pack(anchor='w', padx=20)
 committee_list = ["Academicie", "Almanac", "Alumni", "BAf",
                   "CaCo", "De Wabber", "Ecolution", "EI",
                   "FA", "FCP", "FYC",
@@ -34,26 +51,44 @@ vars_dict = {}
 buttons_dict = {}
 
 for committee in committee_list:
-    key = committee.lower().replace(" ", "_") # python style rules
-    vars_dict[key] = tk.IntVar()
+    _make_checkbutton(committee)
 
-    buttons_dict[key] = ttk.Checkbutton(
-        left_frame,
-        text=committee,
-        variable=vars_dict[key],
-        onvalue=1,
-        offvalue=0,
-        width=15,
-    )
-    buttons_dict[key].invoke()
-
-    buttons_dict[key].pack(anchor='w', padx=20)
-
-# "Add Other" option for future new committees 
+# Add Other section
 other_label = ttk.Label(left_frame, text='Add Other: ')
-other_label.pack(anchor='w', padx=20, pady=(10, 0))
-entry = ttk.Entry(left_frame, exportselection=False, font=("Arial"), foreground="Purple")
-entry.pack(anchor='w', padx=20)
+other_label.pack(anchor='w', padx=20, pady=(15, 0))
+
+other_entry = ttk.Entry(left_frame, 
+                        width=18, 
+                        exportselection=False, 
+                        font=("Arial"), 
+                        foreground="#772953"
+                    )
+other_entry.pack(anchor='w', padx=20)
+
+def add_other_committee():
+    """
+    Adds the committee typed in the entry box to the list,
+    and creates its checkbutton.
+    Removes the entry after checkbutton creation.
+    """
+    # checks
+    name = other_entry.get().strip()
+    if not name:
+        return
+    if name in committee_list:
+        return 
+
+    committee_list.append(name)
+    _make_checkbutton(name)
+    other_entry.delete(0, tk.END)
+
+add_button = ttk.Button(
+    left_frame,
+    text="Add",
+    command=add_other_committee,
+    width=8
+)
+add_button.pack(anchor='w', padx=20, pady=(5, 10))
 
 
 # result box
