@@ -1,14 +1,15 @@
 import random
 
-class SantaTime: 
+
+class SantaTime:
     """Class to handle Secret Santa committee pairings."""
-    def __init__(self, committees: list[str]) -> None: 
+
+    def __init__(self, committees: list[str]) -> None:
         self._validate_list(committees)
         self.committees = committees
-        self.shuffled_committees: dict[str, str] | None  = None
+        self.shuffled_committees: dict[str, str] | None = None
 
-
-    def _validate_list(self, committees: list[str]) -> None: 
+    def _validate_list(self, committees: list[str]) -> None:
         if len(committees) < 3:
             raise ValueError("Input at least at least three committees.")
         if len(set(committees)) != len(committees):
@@ -16,17 +17,16 @@ class SantaTime:
         if len(committees) == 3:
             # special case for 3 committees
             self.three_items = True
-        else: 
+        else:
             self.three_items = False
 
-
-    def shuffle_until_valid(self, max_tries = 10000) -> None:
+    def shuffle_until_valid(self, max_tries=10000) -> None:
         """
         Pair the provided committees.
         Avoids self-pairing (committee assigned to itself),
         and mutual pairing (committee A assigned to gift to committee B
         while committee B is already assigned to gift to committee A).
-        
+
         Args:
             committees: List of committee names.
             max_tries: Maximum number of shuffle attempts to find a valid pairing.
@@ -40,7 +40,7 @@ class SantaTime:
         for try_number in range(max_tries):  # think like a machine
             valid_found = False
 
-            if self.three_items: 
+            if self.three_items:
                 self.shuffled_committees = {
                     self.committees[0]: self.committees[1],
                     self.committees[1]: self.committees[2],
@@ -48,9 +48,11 @@ class SantaTime:
                 }
                 valid_found = True
                 return
-            
-            random.shuffle(shuffled) # shuffle the copy
-            pair_attempt = list(zip(self.committees, shuffled))  # attempt at pre-dictionary
+
+            random.shuffle(shuffled)  # shuffle the copy
+            pair_attempt = list(
+                zip(self.committees, shuffled)
+            )  # attempt at pre-dictionary
 
             # ensure no comittee is assigned to itself
             self_assigned_found = False
@@ -58,7 +60,7 @@ class SantaTime:
                 self_assigned_found = True
 
             # avoid committee A being assigned to B WHILE B is assigned to A
-            # ex: I don't want Ecolution to get De Wabber 
+            # ex: I don't want Ecolution to get De Wabber
             # if De Wabber already gets Ecolution
             mutual_found = False
             for giver, receiver in pair_attempt:
@@ -68,13 +70,14 @@ class SantaTime:
             if not mutual_found and not self_assigned_found:
                 valid_found = True
                 self.shuffled_committees = dict(pair_attempt)
-                return 
+                return
 
         if not valid_found:
-            print("Warning: Maximum shuffle attempts reached without finding a valid " \
-            "pairing. An incorrect pairing has been assigned.")
+            print(
+                "Warning: Maximum shuffle attempts reached without finding a valid "
+                "pairing. An incorrect pairing has been assigned."
+            )
             self.shuffled_committees = dict(pair_attempt)
-            
 
     def single_cycle_shuffle(self):
         """
@@ -91,13 +94,11 @@ class SantaTime:
             receiver = shuffled[(committee + 1) % len(shuffled)]
             self.shuffled_committees[giver] = receiver
 
-    
-
     def return_string_results(self) -> str:
         "Print Secret Santa pairings in aligned format as a string."
         if not self.shuffled_committees:
             return "No Pairings Available."
-        
+
         lines = ["==== Secret Santa Pairings ===="]
         # for dynamic field width alignment in f-string
         max_len = max(len(k) for k in self.committees)
