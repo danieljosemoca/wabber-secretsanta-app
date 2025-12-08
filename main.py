@@ -76,6 +76,23 @@ class SantaTime:
             self.shuffled_committees = dict(pair_attempt)
             
 
+    def single_cycle_shuffle(self):
+        """
+        Kyle's method. Shuffles the committees then assigns
+        each to the next in the shuffled list, Ensuring a single cycle.
+        Simpler approach than shuffle_until_valid, but boringg.
+        """
+        shuffled = self.committees[:]
+        random.shuffle(shuffled)
+
+        self.shuffled_committees = {}
+        for committee in range(len(shuffled)):
+            giver = shuffled[committee]
+            receiver = shuffled[(committee + 1) % len(shuffled)]
+            self.shuffled_committees[giver] = receiver
+
+    
+
     def return_string_results(self) -> str:
         "Print Secret Santa pairings in aligned format as a string."
         if not self.shuffled_committees:
