@@ -111,22 +111,33 @@ def add_other_committee():
 add_button = ttk.Button(left_frame, text="Add", command=add_other_committee, width=8)
 add_button.pack(anchor="w", padx=20, pady=(5, 10))
 
+
 # toggle button for single cycle option
 def update_toggle_text():
     if toggle_var.get() == 1:
-        scl_toggle.config(text="Single Continuous Loop Recommended - ON")
+        scl_toggle.config(
+            text="Continuous Chain Mode (Recommended) -  ON",
+            foreground="#772953",
+            selectcolor="#772953",
+        )
     else:
-        scl_toggle.config(text="Single Continuous Loop (Recommended) - OFF")
+        scl_toggle.config(
+            text="Continuous Chain Mode (Recommended) - OFF",
+            foreground="#219090",
+            selectcolor="#219090",
+        )
+
 
 toggle_var = tk.IntVar()
-scl_toggle = tk.Checkbutton(left_frame,
+scl_toggle = tk.Checkbutton(
+    left_frame,
     variable=toggle_var,
     command=update_toggle_text,
-    wraplength=150,
+    wraplength=200,
     indicatoron=False,
     borderwidth=4,
     foreground="#772953",
-    selectcolor="#772953"
+    selectcolor="#772953",
 )
 
 scl_toggle.invoke()
@@ -165,17 +176,21 @@ def shuffle():
     results_box.delete("1.0", tk.END)
     results_box.insert(tk.END, result_string, "center")
 
+
 s = ttk.Style()
-s.configure('Main.TButton',
-    foreground='#772953',
-    font=('Arial', 18, 'bold'))
-s.map('Main.TButton',
-    foreground=[('pressed', "#135E5E"),
-                ('active', '#219090')],
+s.configure("Main.TButton", foreground="#772953", font=("Arial", 18, "bold"))
+s.map(
+    "Main.TButton",
+    foreground=[("pressed", "#135E5E"), ("active", "#219090")],
 )
 
 main_button = ttk.Button(
-    right_frame, text="Reveal Setup!", command=shuffle, width=20, cursor="pencil", style='Main.TButton'
+    right_frame,
+    text="Reveal Setup!",
+    command=shuffle,
+    width=20,
+    cursor="gobbler",
+    style="Main.TButton",
 )
 main_button.pack(side="top", pady=8, anchor="center")
 results_box.pack(side="top", pady=25, fill="both", expand=True)
