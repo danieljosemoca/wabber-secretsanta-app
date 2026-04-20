@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from ttkthemes import ThemedTk
-from main import SantaTime
+from pairing_logic import SantaTime
 import customtkinter as ctk
 
 ctk.set_appearance_mode("light")
